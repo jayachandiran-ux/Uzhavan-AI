@@ -85,6 +85,18 @@ def preprocess_image(img_bytes):
 def home():
     return render_template("index.html")
 
+@app.route("/debug")
+def debug():
+    import sys
+    return jsonify({
+        "cwd": os.getcwd(),
+        "base_dir": BASE_DIR,
+        "model_path": MODEL_PATH,
+        "model_exists": os.path.exists(MODEL_PATH),
+        "model_loaded": model is not None,
+        "files_in_base": os.listdir(BASE_DIR)
+    })
+
 @app.route("/predict", methods=["POST"])
 def predict():
     if model is None:
