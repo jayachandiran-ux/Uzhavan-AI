@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Uzhavan AI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Language Selection Screen -->
+  <div class="language-screen" id="languageScreen">
+    <div class="language-card">
+      <div class="language-icon">🌾</div>
+      <h1 id="languageTitle">Choose Language</h1>
+      <p id="languageSubtitle">Select your preferred language to continue</p>
+
+      <div class="language-buttons">
+        <button class="lang-btn" id="chooseTamil">தமிழ்</button>
+        <button class="lang-btn" id="chooseEnglish">English</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="appWrapper" style="display:none;">
+    <header class="header">
+      <div class="logo">🌾 Uzhavan AI</div>
+      <nav>
+        <a href="#upload-section" id="navDetect">Detect Disease</a>
+        <a href="#about" id="navAbout">About</a>
+        <button id="changeLanguageBtn" class="change-language-btn">Change Language</button>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span class="hero-tag" id="heroTag">Smart Farming Assistant</span>
+        <h1 id="heroTitle">Detect Paddy Leaf Diseases with AI</h1>
+        <p class="subtitle" id="heroSubtitle">Fast diagnosis, fertilizer advice, organic solutions, and prevention tips</p>
+        <p class="hero-desc" id="heroDesc">
+          Upload a paddy leaf image and get instant AI-based disease analysis built for farmers and agriculture innovation.
+        </p>
+        <a href="#upload-section" class="btn-primary" id="heroButton">Start Detection</a>
+      </div>
+      <div class="hero-image">🌿</div>
+    </section>
+
+    <section class="upload-section" id="upload-section">
+      <div class="card upload-card">
+        <div class="section-top">
+          <h2 id="uploadTitle">Upload Paddy Leaf Image</h2>
+          <p class="card-subtitle" id="uploadSubtitle">Supports JPG, PNG, JPEG formats</p>
+        </div>
+
+        <div class="drop-zone" id="dropZone">
+          <div class="drop-icon">📷</div>
+          <h3 id="dropTitle">Drop your image here</h3>
+          <p id="dropText">Drag & drop your leaf image or choose an option below</p>
+
+          <div class="upload-actions">
+            <label for="fileInput" class="btn-upload" id="browseBtnText">Browse Image</label>
+            <button type="button" class="camera-btn" id="openCameraBtn">Open Camera</button>
+          </div>
+
+          <input type="file" id="fileInput" accept="image/*" hidden />
+        </div>
+
+        <div class="camera-preview-box" id="cameraPreviewBox" style="display:none;">
+          <video id="cameraVideo" autoplay playsinline></video>
+          <canvas id="cameraCanvas" style="display:none;"></canvas>
+
+          <div class="camera-controls">
+            <button type="button" class="camera-btn" id="captureBtn">Capture Photo</button>
+            <button type="button" class="btn-remove" id="closeCameraBtn">Close Camera</button>
+          </div>
+        </div>
+
+        <div class="preview-container" id="previewContainer" style="display:none;">
+          <div class="preview-box">
+            <img id="imagePreview" src="" alt="Preview" />
+          </div>
+          <button class="btn-remove" id="removeBtn">✕ Remove Image</button>
+        </div>
+
+        <button class="btn-primary btn-analyze" id="analyzeBtn" disabled>
+          <span id="btnText">Analyze Leaf</span>
+          <span id="btnLoader" class="loader" style="display:none;"></span>
+        </button>
+      </div>
+    </section>
+
+    <section class="result-section" id="resultSection" style="display:none;">
+      <div class="card result-card">
+        <div class="result-top-actions">
+          <div class="result-header" id="resultHeader">
+            <div class="disease-badge" id="diseaseBadge"></div>
+
+            <div class="confidence-bar-wrap">
+              <span id="confidenceLabel">Confidence</span>
+              <div class="confidence-bar">
+                <div class="confidence-fill" id="confidenceFill"></div>
+              </div>
+              <span id="confidenceText"></span>
+            </div>
+          </div>
+
+          <button class="speak-btn" id="speakResultBtn">🔊 Speak</button>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-item">
+            <div class="result-icon">📋</div>
+            <h4 id="descLabel">Description</h4>
+            <p id="resDescription"></p>
+          </div>
+
+          <div class="result-item">
+            <div class="result-icon">🌱</div>
+            <h4 id="fertLabel">Fertilizer</h4>
+            <p id="resFertilizer"></p>
+          </div>
+
+          <div class="result-item">
+            <div class="result-icon">💊</div>
+            <h4 id="pestLabel">Pesticide / Treatment</h4>
+            <p id="resPesticide"></p>
+          </div>
+
+          <div class="result-item">
+            <div class="result-icon">🍃</div>
+            <h4 id="organicLabel">Organic Solution</h4>
+            <p id="resOrganic"></p>
+          </div>
+
+          <div class="result-item full-width">
+            <div class="result-icon">🛡️</div>
+            <h4 id="prevLabel">Prevention Tips</h4>
+            <p id="resPrevention"></p>
+          </div>
+        </div>
+
+        <button class="btn-secondary" id="resetBtn">Analyze Another Image</button>
+      </div>
+    </section>
+
+    <div class="error-toast" id="errorToast" style="display:none;"></div>
+
+    <section class="about-section" id="about">
+      <div class="about-title-wrap">
+        <h2 id="aboutTitle">Why Uzhavan AI?</h2>
+        <p id="aboutSubtitle">Made for smart agriculture, farmer support, and quick field-level decisions</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="about-icon">🔬</div>
+          <h3 id="aboutAiTitle">AI Detection</h3>
+          <p id="aboutAiText">Detect paddy leaf diseases using trained deep learning image analysis.</p>
+        </div>
+
+        <div class="about-card">
+          <div class="about-icon">💡</div>
+          <h3 id="aboutSmartTitle">Smart Suggestions</h3>
+          <p id="aboutSmartText">Get fertilizer, pesticide, and organic remedy recommendations instantly.</p>
+        </div>
+
+        <div class="about-card">
+          <div class="about-icon">📱</div>
+          <h3 id="aboutMobileTitle">Field Ready</h3>
+          <p id="aboutMobileText">Use it from laptop or mobile while checking crops directly in the field.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p id="footerText">🌾 Uzhavan AI — Empowering farmers with technology</p>
+    </footer>
+
+    <div class="chat-toggle" id="chatToggle">💬</div>
+
+    <div class="chatbox" id="chatbox" style="display:none;">
+      <div class="chat-header">
+        <div>
+          <h3 id="chatTitle">🌾 Uzhavan AI Assistant</h3>
+          <p id="chatSubtitle">Farmer help chat</p>
+        </div>
+        <button id="closeChatBtn" class="close-chat-btn">✕</button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages"></div>
+
+      <div class="quick-actions">
+        <button class="quick-btn" id="quick1"></button>
+        <button class="quick-btn" id="quick2"></button>
+        <button class="quick-btn" id="quick3"></button>
+        <button class="quick-btn" id="quick4"></button>
+      </div>
+
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" placeholder="Type your question..." />
+        <button id="sendChatBtn">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
