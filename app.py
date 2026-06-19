@@ -8,7 +8,8 @@ from tensorflow.keras.preprocessing import image
 
 app = Flask(__name__)
 
-MODEL_PATH = os.path.join("model", "paddy_disease_model.h5")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model", "paddy_disease_model.h5")
 IMG_SIZE = (224, 224)
 
 CLASS_NAMES = [
