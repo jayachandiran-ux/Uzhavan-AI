@@ -75,6 +75,9 @@ def load_trained_model():
     else:
         print(f"Warning: Model not found at {MODEL_PATH}. Train the model first.")
 
+# Load model at startup (works with both gunicorn and direct python run)
+load_trained_model()
+
 def preprocess_image(img_bytes):
     img = Image.open(io.BytesIO(img_bytes)).convert("RGB")
     img = img.resize(IMG_SIZE)
@@ -135,5 +138,4 @@ def predict():
         return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
 
 if __name__ == "__main__":
-    load_trained_model()
     app.run(debug=True)
